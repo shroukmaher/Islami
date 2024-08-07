@@ -8,6 +8,7 @@ import 'package:assignment_one/ui/utils/app_colors.dart';
 import 'package:assignment_one/ui/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "home/";
@@ -20,7 +21,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int SelectedTabIndex = 0;
-  List<Widget>tabs=  [Quran(),hadeth(),Sebha(),IRadio(),Settings()];
+  List<Widget>tabs=  [Quran(),hadeth(),IRadio(),Sebha(),Settings()];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
 
   AppBar buildAppbar() => AppBar(
         title: Text(
-          "Islami",
+         AppLocalizations.of(context)!.islami ,
           style: AppStyle.appBarTextStyle,
         ),
         centerTitle: true,
@@ -55,7 +56,7 @@ class _HomeState extends State<Home> {
         SelectedTabIndex = index;
       },
       selectedItemColor: AppColors.lightBlack,
-      items: const [
+      items:  [
         BottomNavigationBarItem(
             icon: ImageIcon(AssetImage(AppAssets.icQuran)),
             label: "Quran"),
@@ -70,7 +71,7 @@ class _HomeState extends State<Home> {
             label: "Sebha"),
         BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: "Settings")
+            label: AppLocalizations.of(context)!.settings)
       ],
     ),
   );
