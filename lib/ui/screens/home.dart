@@ -1,3 +1,4 @@
+import 'package:assignment_one/ui/screens/Settings/Settings.dart';
 import 'package:assignment_one/ui/screens/hadeth/hadeth.dart';
 import 'package:assignment_one/ui/screens/quran/quran.dart';
 import 'package:assignment_one/ui/screens/radio/radio.dart';
@@ -19,7 +20,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int SelectedTabIndex = 0;
-  List<Widget>tabs=  [Quran(),hadeth(),Sebha(),IRadio()];
+  List<Widget>tabs=  [Quran(),hadeth(),Sebha(),IRadio(),Settings()];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,7 +67,10 @@ class _HomeState extends State<Home> {
             label: "Radio"),
         BottomNavigationBarItem(
             icon: ImageIcon(AssetImage(AppAssets.icSebha)),
-            label: "Sebha")
+            label: "Sebha"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings")
       ],
     ),
   );
