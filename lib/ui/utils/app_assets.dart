@@ -1,7 +1,7 @@
 class AppAssets{
   static const String splash = "assets/images/splash.png";
   static const String background = "assets/images/main_background.png";
-  static const String darkBackground = "assets/images/dark_background.png";
+  static const String darkBackground = "assets/images/dark_bg.png";
   static const String icQuran = "assets/images/icon_quran.png";
   static const String icAhadeth = "assets/images/icon_hadeth.png";
   static const String icSebha = "assets/images/icon_sebha.png";

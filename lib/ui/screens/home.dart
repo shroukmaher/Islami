@@ -1,3 +1,4 @@
+import 'package:assignment_one/ui/Providers/theme_provider.dart';
 import 'package:assignment_one/ui/screens/Settings/Settings.dart';
 import 'package:assignment_one/ui/screens/hadeth/hadeth.dart';
 import 'package:assignment_one/ui/screens/quran/quran.dart';
@@ -9,6 +10,8 @@ import 'package:assignment_one/ui/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "home/";
@@ -20,13 +23,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  ThemeProvider themeProvider=ThemeProvider();
+
   int SelectedTabIndex = 0;
   List<Widget>tabs=  [Quran(),hadeth(),IRadio(),Sebha(),Settings()];
+
+
+  @override
+  void initState() {
+    super.initState();
+   _loadPreferences();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    themeProvider=Provider.of(context);
     return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(image: AssetImage(AppAssets.background)),
+      decoration:  BoxDecoration(
+        image:
+        DecorationImage
+          (image:
+        AssetImage(themeProvider.isDarkEnabled?AppAssets.darkBackground: AppAssets.background)),
       ),
       child: Scaffold(
         appBar: buildAppbar(),
@@ -40,22 +58,18 @@ class _HomeState extends State<Home> {
   AppBar buildAppbar() => AppBar(
         title: Text(
          AppLocalizations.of(context)!.islami ,
-          style: AppStyle.appBarTextStyle,
         ),
-        centerTitle: true,
-        backgroundColor: AppColors.transparent,
-        elevation: 0,
+
       );
 
   Theme buildBottomNavigation()=> Theme(
-    data: ThemeData(canvasColor: AppColors.lightPrimary),
+    data: ThemeData( canvasColor: themeProvider.isDarkEnabled?AppColors.darkPrimary:AppColors.lightPrimary),
     child: BottomNavigationBar(
       currentIndex: SelectedTabIndex,
       onTap: (index) {
         setState(() {});
         SelectedTabIndex = index;
       },
-      selectedItemColor: AppColors.lightBlack,
       items:  [
         BottomNavigationBarItem(
             icon: ImageIcon(AssetImage(AppAssets.icQuran)),
@@ -75,4 +89,17 @@ class _HomeState extends State<Home> {
       ],
     ),
   );
+
+
+
+  void _loadPreferences() async{
+    final prefs=await SharedPreferences.getInstance();
+
+    setState(() {
+      bool issaveddark= prefs.getBool('isDarkEnabled')?? false;
+      themeProvider.newTheme=issaveddark?ThemeMode.dark:ThemeMode.light;
+
+    });
+  }
+
 }

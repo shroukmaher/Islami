@@ -1,7 +1,12 @@
+import 'package:assignment_one/ui/Providers/lang_Provider.dart';
 import 'package:assignment_one/ui/utils/app_colors.dart';
 import 'package:assignment_one/ui/utils/app_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Providers/theme_provider.dart';
 
 class Settings extends StatefulWidget {
 
@@ -12,12 +17,17 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String SelectedLanguage="en";
+  late LanguagePRovider languageProvider;
+  late ThemeProvider themeProvider;
 
-  bool isDarkThemeEnabled=false;
+
+
 
   @override
   Widget build(BuildContext context) {
+    languageProvider=Provider.of(context);
+    themeProvider=Provider.of(context);
+
     return Padding(
     padding: const EdgeInsets.all(16),
       child: Column(
@@ -38,9 +48,12 @@ class _SettingsState extends State<Settings> {
 
   buildThemeSwitch() =>Switch(
     activeColor: AppColors.lightPrimary,
-    value: isDarkThemeEnabled,
-    onChanged: (newValue){
-      isDarkThemeEnabled=newValue;
+    value: themeProvider.isDarkEnabled ,
+    onChanged: (newValue) async{
+
+      themeProvider.newTheme=newValue?ThemeMode.dark:ThemeMode.light;
+      final pref=await SharedPreferences.getInstance();
+      pref.setBool('isDarkEnabled',themeProvider.isDarkEnabled);
       setState(() {
 
       });
@@ -48,17 +61,21 @@ class _SettingsState extends State<Settings> {
 
   buildDropDownLangMenu() =>DropdownButton(
     isExpanded: true,
-    value: SelectedLanguage,
+    value: languageProvider.selectedLanguage,
     items: const [
       DropdownMenuItem<String>(child: Text("العربية") ,value: "ar",),
       DropdownMenuItem<String>(child: Text("English") ,value: "en",)
     ],
     onChanged: (newValue){
-      SelectedLanguage=newValue??SelectedLanguage;
+      languageProvider.newLanguage=newValue??languageProvider.selectedLanguage;
       setState(() {
 
       });
 
     },
   );
+
+
 }
+
+
